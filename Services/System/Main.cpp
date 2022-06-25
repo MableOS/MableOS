@@ -1,5 +1,7 @@
+#include <Core/EventLoop.hpp>
 #include <cstdio>
 #include <cstdlib>
+#include <memory>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -28,6 +30,6 @@ int main()
 {
     system_mount_all_fs();
 
-    while (true)
-        ;
+    auto event_loop = std::make_unique<Core::EventLoop>();
+    return event_loop->run();
 }

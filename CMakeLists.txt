@@ -43,10 +43,38 @@ add_custom_target(run
         COMMAND ${CMAKE_SOURCE_DIR}/Scripts/Run.sh
         USES_TERMINAL)
 
+function(mableos_install_headers target_name)
+    file(GLOB_RECURSE headers RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.hpp")
+    foreach (header ${headers})
+        get_filename_component(subdirectory ${header} DIRECTORY)
+        install(FILES ${header} DESTINATION usr/include/${target_name}/${subdirectory})
+    endforeach ()
+endfunction()
+
+function(mableos_install_sources)
+    cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE relative_dir)
+    file(GLOB_RECURSE sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.hpp" "*.cpp")
+    foreach (source ${sources})
+        get_filename_component(subdirectory ${source} DIRECTORY)
+        install(FILES ${source} DESTINATION usr/src/MableOS/${relative_dir}/${subdirectory})
+    endforeach ()
+endfunction()
+
 function(mableos_bin bin_name)
     add_executable(${bin_name} ${SOURCES})
     install(TARGETS ${bin_name} RUNTIME DESTINATION bin)
 endfunction()
 
+function(mableos_lib lib_name fs_name)
+    mableos_install_headers(${lib_name})
+    mableos_install_sources()
+    add_library(${lib_name} SHARED ${SOURCES})
+    set_target_properties(${lib_name} PROPERTIES OUTPUT_NAME ${fs_name})
+    install(TARGETS ${lib_name} DESTINATION usr/lib)
+endfunction()
+
+include_directories(Libraries)
+
 add_subdirectory(Services)
 add_subdirectory(Utilities)
+add_subdirectory(Libraries)
