@@ -1,6 +1,5 @@
 #include <Core/EventLoop.hpp>
-#include <cstdio>
-#include <cstdlib>
+#include <Core/Log.hpp>
 #include <memory>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -10,20 +9,22 @@ void system_mount_all_fs()
     pid_t pid = fork();
     if (pid < 0)
     {
-        std::perror("fork()");
-        std::exit(pid);
+        Core::Log::perror("fork()");
+        assert(false);
     }
     else if (!pid)
     {
         auto result = execl("/bin/mount", "mount", "-a", nullptr);
         if (result < 0)
         {
-            std::perror("execl()");
-            std::exit(result);
+            Core::Log::perror("execl()");
+            assert(false);
         }
     }
     else
         wait(nullptr);
+
+    Core::Log::info("Mounted all filesystems");
 }
 
 int main()

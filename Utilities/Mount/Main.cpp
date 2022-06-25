@@ -1,3 +1,4 @@
+#include <Core/Log.hpp>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -28,7 +29,7 @@ unsigned long mount_get_flags(const char *tokens)
         else if (token == "relatime")
             flags |= MS_RELATIME;
         else
-            std::cout << "Invalid flag = " << token << std::endl;
+            Core::Log::warning("Invalid flag type = %s", token.c_str());
     }
 
     return flags;
@@ -59,13 +60,12 @@ int mount_all()
         auto result = mount(special_file, dir, fstype, flags, nullptr);
         if (result < 0)
         {
-            std::cerr << "Failed to mount file = " << special_file << ", dir = " << dir << ", type = " << fstype
-                      << ", flags = " << flags << std::endl;
+            Core::Log::error("Failed to mount file = %s, dir = %s, type = %s, flags = 0x%x", special_file, dir, fstype,
+                             flags);
             continue;
         }
 
-        std::cout << "Mounted file = " << special_file << ", dir = " << dir << ", type = " << fstype
-                  << ", flags = " << flags << std::endl;
+        Core::Log::info("Mounted file = %s, dir = %s, type = %s, flags = 0x%x", special_file, dir, fstype, flags);
     }
 
     return 0;
