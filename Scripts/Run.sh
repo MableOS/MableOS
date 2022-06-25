@@ -4,11 +4,13 @@
 [ -z "$MABLEOS_QEMU_ARGS" ] && MABLEOS_QEMU_ARGS="
     -kernel $MABLEOS_QEMU_KERNEL
     -serial stdio
+    -vga std
     -drive file=$MABLEOS_QEMU_IMAGE,index=0,media=disk,format=raw"
 [ -z "$MABLEOS_QEMU_APP_ARGS" ] && MABLEOS_QEMU_APP_ARGS="
     root=/dev/sda
     console=ttyS0
-    init=/bin/SystemService"
+    init=/bin/SystemService
+    vga=0x341"
 
 [ -e /dev/kvm ] && [ -r /dev/kvm ] && [ -w /dev/kvm ] && MABLEOS_QEMU_VIRT="-enable-kvm"
 
