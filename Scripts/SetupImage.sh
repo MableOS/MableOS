@@ -32,8 +32,8 @@ inode_usage() {
 }
 
 IMAGE_INODE_SIZE=1024
-IMAGE_INODE_COUNT=$((($(inode_usage Sysroot) + 2000) * 7))
-IMAGE_SIZE=$((($(disk_usage Sysroot) * 1024) + (IMAGE_INODE_COUNT * IMAGE_INODE_SIZE) * 2))
+IMAGE_INODE_COUNT=$((($(inode_usage Sysroot) + $(inode_usage "$SOURCE_DIR/Base") + 2000) * 7))
+IMAGE_SIZE=$(((($(disk_usage Sysroot) + $(disk_usage "$SOURCE_DIR/Base")) * 1024) + (IMAGE_INODE_COUNT * IMAGE_INODE_SIZE) * 2))
 
 if [ $IMAGE_EXIST -eq 1 ];  then
     OLD_IMAGE_SIZE=$(wc -c < $IMAGE_ARCHIVE)

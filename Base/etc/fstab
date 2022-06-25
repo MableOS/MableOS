@@ -1,0 +1,9 @@
+# <device>  <dir>       <type>      <options>
+  /dev/sda  /           ext4        defaults,remount
+  sysfs     /sys        sysfs       nosuid,nodev,noexec,relatime
+  proc      /proc       proc        nosuid,nodev,noexec,relatime
+  tmpfs     /tmp        tmpfs       nosuid,nodev
+  devtmpfs  /dev        devtmpfs    nosuid,remount
+  tmpfs     /dev/shm    tmpfs       nosuid,nodev
+  devpts    /dev/pts    devpts      nosuid,noexec,relatime
+  mqueue    /dev/mqueue mqueue      nosuid,nodev,noexec,relatime
