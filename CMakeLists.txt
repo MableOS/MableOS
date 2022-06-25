@@ -49,3 +49,4 @@ function(mableos_bin bin_name)
 endfunction()
 
 add_subdirectory(Services)
+add_subdirectory(Utilities)
