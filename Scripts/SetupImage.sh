@@ -31,9 +31,13 @@ inode_usage() {
     find "$1" | wc -l
 }
 
-IMAGE_INODE_SIZE=1024
-IMAGE_INODE_COUNT=$((($(inode_usage Sysroot) + $(inode_usage "$SOURCE_DIR/Base") + 2000) * 7))
-IMAGE_SIZE=$(((($(disk_usage Sysroot) + $(disk_usage "$SOURCE_DIR/Base")) * 1024) + (IMAGE_INODE_COUNT * IMAGE_INODE_SIZE) * 2))
+IMAGE_INODE_SIZE=256
+IMAGE_INODE_COUNT=$(($(inode_usage Sysroot) + $(inode_usage "$SOURCE_DIR/Base")))
+IMAGE_INODE_COUNT=$((IMAGE_INODE_COUNT + 2000))
+IMAGE_INODE_COUNT=$((IMAGE_INODE_COUNT * 7))
+IMAGE_SIZE=$((($(disk_usage Sysroot) + $(disk_usage "$SOURCE_DIR/Base")) * 1024))
+IMAGE_SIZE=$((IMAGE_SIZE + (IMAGE_INODE_COUNT * IMAGE_INODE_SIZE)))
+IMAGE_SIZE=$((IMAGE_SIZE * 2))
 
 if [ $IMAGE_EXIST -eq 1 ];  then
     OLD_IMAGE_SIZE=$(wc -c < $IMAGE_ARCHIVE)
