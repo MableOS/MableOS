@@ -74,6 +74,7 @@ function(mableos_lib lib_name fs_name)
 endfunction()
 
 include_directories(Libraries)
+include_directories(Services)
 
 add_subdirectory(Services)
 add_subdirectory(Utilities)

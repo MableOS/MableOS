@@ -1,5 +1,6 @@
 #include <Core/EventLoop.hpp>
 #include <Core/Log.hpp>
+#include <System/Service.hpp>
 #include <memory>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -32,5 +33,15 @@ int main()
     system_mount_all_fs();
 
     auto event_loop = std::make_unique<Core::EventLoop>();
+
+    std::vector<System::Service> services;
+    auto ini = new Core::Ini("/etc/Services/System.ini");
+    for (const auto &name : ini->sections())
+        services.emplace_back(name, ini);
+
+    for (auto service : services)
+        service.run();
+    Core::Log::info("Started %d services", services.size());
+
     return event_loop->run();
 }
