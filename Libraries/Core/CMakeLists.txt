@@ -1,4 +1,5 @@
 set(SOURCES
-        EventLoop.cpp)
+        EventLoop.cpp
+        Ini.cpp)
 
 mableos_lib(LibCore Core)
