@@ -35,6 +35,14 @@ add_custom_target(toolchain
         COMMAND "SOURCE_DIR=${CMAKE_SOURCE_DIR}" "SYSROOT_DIR=${CMAKE_SYSROOT}" ${CMAKE_SOURCE_DIR}/Scripts/SetupToolchain.sh
         USES_TERMINAL)
 
+add_custom_target(image
+        COMMAND "SOURCE_DIR=${CMAKE_SOURCE_DIR}" "SYSROOT_DIR=${CMAKE_SYSROOT}" ${CMAKE_SOURCE_DIR}/Scripts/SetupImage.sh
+        USES_TERMINAL)
+
+add_custom_target(run
+        COMMAND ${CMAKE_SOURCE_DIR}/Scripts/Run.sh
+        USES_TERMINAL)
+
 function(mableos_bin bin_name)
     add_executable(${bin_name} ${SOURCES})
     install(TARGETS ${bin_name} RUNTIME DESTINATION bin)
